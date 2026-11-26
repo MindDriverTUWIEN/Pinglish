@@ -27,6 +27,8 @@ import urllib.request
 import wave
 from pathlib import Path
 
+from paths import USER_DIR
+
 import numpy as np
 import sounddevice as sd
 
@@ -66,7 +68,7 @@ class SpeechError(Exception):
     """A problem the UI can show as a status line."""
 
 
-_KEY_FILE = Path(__file__).resolve().parent / "data" / "speech_key.txt"
+_KEY_FILE = USER_DIR / "speech_key.txt"
 # Chromium's public key for its web speech service. It is not tied to any
 # user's account, and it is the same default the open-source SpeechRecognition
 # library ships for recognize_google(). Built in so the mic works right after
@@ -271,7 +273,7 @@ def transcribe_persian(wav_bytes: bytes) -> str:
 # When set, it is used instead of the free endpoint. See README, "Using your own
 # Google Cloud key".
 _CLOUD_URL = "https://speech.googleapis.com/v1/speech:recognize"
-_CLOUD_KEY_FILE = Path(__file__).resolve().parent / "data" / "google_cloud_key.txt"
+_CLOUD_KEY_FILE = USER_DIR / "google_cloud_key.txt"
 
 
 def _cloud_key() -> str:

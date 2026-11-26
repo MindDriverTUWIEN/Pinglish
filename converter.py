@@ -347,7 +347,9 @@ BUILTIN_PATCHES = {
 # -----------------------------------------------------------------------------
 from pathlib import Path
 
-_DATA_DIR = Path(__file__).resolve().parent / "data"
+from paths import RES_DIR, USER_DIR
+
+_DATA_DIR = RES_DIR / "data"          # shipped dictionary (read-only when installed)
 _COMMUNITY_DICT_PATH = _DATA_DIR / "community_dict.txt"
 
 
@@ -389,7 +391,7 @@ try:
 except ImportError:
     COMMUNITY_PATCHES = {}
 
-_USER_CORRECTIONS_PATH = _DATA_DIR / "user_corrections.txt"
+_USER_CORRECTIONS_PATH = USER_DIR / "user_corrections.txt"
 
 
 def _load_user_corrections(path: Path = _USER_CORRECTIONS_PATH) -> dict[str, str]:
@@ -444,7 +446,7 @@ def apply_user_correction(finglish: str, persian: str) -> None:
 
     # Persist: rewrite full user corrections file (small, simple)
     try:
-        _DATA_DIR.mkdir(parents=True, exist_ok=True)
+        USER_DIR.mkdir(parents=True, exist_ok=True)
         lines = [
             "# User corrections from Suggested Alternatives (finglish<TAB>persian)",
             "# These override the engine and community dictionary.",

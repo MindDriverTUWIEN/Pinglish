@@ -8,10 +8,14 @@ All notable changes to this project are documented here. The format follows
 ### Added
 - The mic works right after installation: Chromium's public speech key is built
   in as the default.
+- Windows installer (`Pinglish-Setup-<version>.exe`, Inno Setup) and a
+  PyInstaller build that bundles Flet's window program; see `installer/`.
 - Optional own Google Cloud Speech-to-Text key (`data/google_cloud_key.txt`
   or `GOOGLE_CLOUD_SPEECH_KEY`), used instead of the free endpoint when set.
 
 ### Changed
+- When installed, user files live in `%LOCALAPPDATA%Pinglish`; from source
+  they stay in `data/`.
 - Clearer status messages when a speech service refuses a request.
 
 ## [1.02] - 2026-11-26

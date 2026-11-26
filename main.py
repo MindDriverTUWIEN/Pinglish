@@ -42,6 +42,7 @@ import pystray
 from PIL import Image, ImageDraw
 
 # Local clean converter (no prints)
+from paths import FLET_CLIENT_DIR, FROZEN, RES_DIR, USER_DIR
 from converter import apply_user_correction, convert, convert_word, persian_punctuation, to_finglish
 from speech_fa import SpeechError, listen_persian, probe_microphone
 
@@ -222,7 +223,9 @@ def _guid(text: str) -> _Guid:
 
 
 def _pin_relaunch_command() -> str:
-    """What a pinned icon runs: the same hidden launcher as the desktop shortcut."""
+    """What a pinned icon runs: Pinglish.exe when installed, else the hidden launcher."""
+    if FROZEN:
+        return f'"{sys.executable}"'
     launcher = APP_DIR / "launch-hidden.vbs"
     windir = os.environ.get("SystemRoot", r"C:\Windows")
     if launcher.is_file():
@@ -286,9 +289,11 @@ def _schedule_native_window_icon():
 # ----------------------------- Constants & Paths -----------------------------
 APP_NAME = "Pinglish"
 APP_VERSION = "1.02"
-APP_DIR = Path(__file__).parent.resolve()
-DATA_DIR = APP_DIR / "data"
-DATA_DIR.mkdir(exist_ok=True)
+APP_DIR = RES_DIR      # read-only resources (assets/, launcher)
+DATA_DIR = USER_DIR    # settings, log: data/ from source, %LOCALAPPDATA%\Pinglish installed
+if FROZEN and FLET_CLIENT_DIR.is_dir():
+    # Installed build: use the bundled Flet window, never download one.
+    os.environ.setdefault("FLET_VIEW_PATH", str(FLET_CLIENT_DIR))
 
 SETTINGS_FILE = DATA_DIR / "settings.json"
 
@@ -1805,7 +1810,7 @@ if __name__ == "__main__":
     # ft.run(main, ...) is the current recommended way (main is positional).
     # Use absolute assets_dir for reliability when launched via VBS/pythonw.
     try:
-        assets_dir = str((Path(__file__).parent / "assets").resolve())
+        assets_dir = str((RES_DIR / "assets").resolve())
         # Must be set before flet.exe starts. The client reads this and stops
         # using the shared Flet taskbar identity.
         os.environ["FLET_APP_USER_MODEL_ID"] = APP_USER_MODEL_ID

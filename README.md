@@ -21,6 +21,15 @@ alternative spellings, and turns spoken Persian into text live.
 
 ---
 
+## Download
+
+**[⬇ Download the latest Pinglish installer](https://github.com/MindDriverTUWIEN/Pinglish/releases/latest)**
+(`Pinglish-Setup-<version>.exe`, Windows 10/11, 64-bit)
+
+Run the installer, click through the setup, and start Pinglish from the Start
+menu. No Python or other software is needed. See [Installation](#installation)
+for details.
+
 ## Screenshots
 
 <p align="center">
@@ -40,6 +49,7 @@ alternative spellings, and turns spoken Persian into text live.
 
 ## Contents
 
+- [Download](#download)
 - [Screenshots](#screenshots)
 - [Features](#features)
 - [Requirements](#requirements)
@@ -51,7 +61,7 @@ alternative spellings, and turns spoken Persian into text live.
 - [How it works](#how-it-works)
 - [Project structure](#project-structure)
 - [Improving the dictionary](#improving-the-dictionary)
-- [Building a standalone app](#building-a-standalone-app)
+- [Building the installer](#building-the-installer)
 - [Troubleshooting](#troubleshooting)
 - [Privacy](#privacy)
 - [Contributing](#contributing)
@@ -80,11 +90,30 @@ alternative spellings, and turns spoken Persian into text live.
 
 ## Requirements
 
-- Windows 10 or 11 (the app uses WASAPI audio and Win32 window APIs)
-- Python 3.11 or newer
+- Windows 10 or 11, 64-bit (the app uses WASAPI audio and Win32 window APIs)
 - For speech only: a microphone and an internet connection
+- Only to run from source: Python 3.11 or newer
 
 ## Installation
+
+### For users: the installer
+
+1. Download `Pinglish-Setup-<version>.exe` from the
+   [latest release](https://github.com/MindDriverTUWIEN/Pinglish/releases/latest).
+2. Run it. It installs for your user account and needs no administrator rights.
+   You can add a desktop icon and let Pinglish start with Windows.
+3. Start **Pinglish** from the Start menu.
+
+> [!NOTE]
+> The installer is not digitally signed, so Windows SmartScreen may show
+> *"Windows protected your PC"*. Click **More info → Run anyway**. Each
+> release lists the installer's SHA-256 checksum, so you can check the file
+> with `Get-FileHash .\Pinglish-Setup-<version>.exe`.
+
+To uninstall, use **Settings → Apps → Installed apps → Pinglish**. Your
+corrections and settings in `%LOCALAPPDATA%\Pinglish` are kept.
+
+### For developers: from source
 
 ```powershell
 git clone https://github.com/MindDriverTUWIEN/Pinglish.git
@@ -203,8 +232,9 @@ for example *API key not valid*.
 
 ## Configuration and data files
 
-Everything in `data/` except the shipped dictionary is created on your PC and
-is ignored by git.
+User files are kept in `%LOCALAPPDATA%\Pinglish` when Pinglish is installed,
+and in `data/` when it runs from source (ignored by git, except the shipped
+dictionary).
 
 | File | Contents |
 |---|---|
@@ -236,6 +266,7 @@ spelling converts back to the same word.
 Pinglish/
 ├── main.py                    # Flet UI, tray icon, hotkeys, mic wiring
 ├── converter.py               # Pinglish ⇄ Persian conversion and punctuation
+├── paths.py                   # Where resources and user files live
 ├── speech_fa.py               # Microphone capture and Persian speech recognition
 ├── community_patches.py       # Hand-curated spellings merged at runtime
 ├── data/
@@ -248,7 +279,8 @@ Pinglish/
 ├── launch-hidden.vbs          # Console-free launcher
 ├── create-desktop-shortcut.ps1
 ├── run.bat / run.ps1          # Launchers with a console, for debugging
-├── build_windows.ps1          # Standalone build with flet build
+├── installer/                 # pinglish.spec, pinglish.iss, build.ps1
+├── build_windows.ps1          # Alternative build with flet build (needs Flutter)
 └── requirements.txt
 ```
 
@@ -265,14 +297,20 @@ right one. To improve it for everyone:
 python scripts/build_community_dict.py
 ```
 
-## Building a standalone app
+## Building the installer
+
+Needs the source setup above, [PyInstaller](https://pyinstaller.org/) and
+[Inno Setup](https://jrsoftware.org/isinfo.php) 6 or 7.
 
 ```powershell
-.\.venv\Scripts\Activate.ps1
-.\build_windows.ps1
+.\.venv\Scripts\python.exe -m pip install pyinstaller
+.\installer\build.ps1 -Version 1.02
 ```
 
-The output in `build/windows/` runs without a Python installation.
+This creates `dist\Pinglish\Pinglish.exe` (PyInstaller, with Flet's window
+program bundled, so nothing is downloaded at start-up) and the installer
+`dist\Pinglish-Setup-1.02.exe`. Upload the installer to a GitHub release
+together with its SHA-256 checksum, which the script prints.
 
 ## Troubleshooting
 

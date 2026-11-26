@@ -23,6 +23,15 @@
 
 ---
 
+<a id="download"></a>
+## دانلود
+
+**[⬇ دانلود آخرین نسخهٔ نصب‌کنندهٔ Pinglish](https://github.com/MindDriverTUWIEN/Pinglish/releases/latest)**
+(`Pinglish-Setup-<version>.exe`، ویندوز ۱۰/۱۱، ۶۴ بیتی)
+
+نصب‌کننده را اجرا کنید، مراحل نصب را دنبال کنید و Pinglish را از منوی Start
+باز کنید. به پایتون یا نرم‌افزار دیگری نیاز نیست. جزئیات در بخش [نصب](#installation).
+
 <a id="screenshots"></a>
 ## تصاویر
 
@@ -43,6 +52,7 @@
 
 ## فهرست
 
+- [دانلود](#download)
 - [تصاویر](#screenshots)
 - [امکانات](#features)
 - [پیش‌نیازها](#requirements)
@@ -54,7 +64,7 @@
 - [نحوهٔ کار](#how-it-works)
 - [ساختار پروژه](#project-structure)
 - [بهبود واژه‌نامه](#dictionary)
-- [ساخت نسخهٔ مستقل](#building)
+- [ساخت نصب‌کننده](#building)
 - [رفع مشکلات](#troubleshooting)
 - [حریم خصوصی](#privacy)
 - [مشارکت](#contributing)
@@ -85,12 +95,35 @@
 <a id="requirements"></a>
 ## پیش‌نیازها
 
-- ویندوز ۱۰ یا ۱۱ (برنامه از صدای WASAPI و رابط‌های پنجرهٔ Win32 استفاده می‌کند)
-- پایتون 3.11 یا جدیدتر
+- ویندوز ۱۰ یا ۱۱، ۶۴ بیتی (برنامه از صدای WASAPI و رابط‌های پنجرهٔ Win32 استفاده می‌کند)
 - فقط برای گفتار: میکروفون و اتصال اینترنت
+- فقط برای اجرا از سورس: پایتون 3.11 یا جدیدتر
 
 <a id="installation"></a>
 ## نصب
+
+### برای کاربران: نصب‌کننده
+
+1. فایل `Pinglish-Setup-<version>.exe` را از
+   [آخرین نسخهٔ منتشرشده](https://github.com/MindDriverTUWIEN/Pinglish/releases/latest) دانلود کنید.
+2. اجرایش کنید. برای حساب کاربری شما نصب می‌شود و به دسترسی مدیر (admin) نیاز ندارد.
+   می‌توانید آیکون دسکتاپ بسازید و اجازه دهید Pinglish با ویندوز شروع شود.
+3. **Pinglish** را از منوی Start اجرا کنید.
+
+</div>
+
+> [!NOTE]
+> نصب‌کننده امضای دیجیتال ندارد، به همین دلیل Windows SmartScreen ممکن است پیام
+> *«Windows protected your PC»* را نشان دهد. روی **More info** و سپس **Run anyway**
+> کلیک کنید. برای هر نسخه چک‌سام SHA-256 نصب‌کننده منتشر می‌شود تا بتوانید فایل را
+> با `Get-FileHash .\Pinglish-Setup-<version>.exe` بررسی کنید.
+
+<div dir="rtl">
+
+برای حذف برنامه از **Settings ← Apps ← Installed apps ← Pinglish** استفاده کنید.
+اصلاح‌ها و تنظیمات شما در `%LOCALAPPDATA%\Pinglish` باقی می‌مانند.
+
+### برای توسعه‌دهندگان: اجرا از سورس
 
 ```powershell
 git clone https://github.com/MindDriverTUWIEN/Pinglish.git
@@ -220,8 +253,8 @@ setx GOOGLE_SPEECH_KEY "another-key"
 <a id="data-files"></a>
 ## تنظیمات و فایل‌های داده
 
-همه‌چیز در `data/` به‌جز واژه‌نامهٔ همراه برنامه روی کامپیوتر شما ساخته می‌شود
-و git آن را نادیده می‌گیرد.
+فایل‌های کاربر در نسخهٔ نصب‌شده در `%LOCALAPPDATA%\Pinglish` و هنگام اجرا از سورس
+در `data/` نگه داشته می‌شوند (git آن‌ها را به‌جز واژه‌نامهٔ همراه برنامه نادیده می‌گیرد).
 
 | فایل | محتوا |
 |---|---|
@@ -255,6 +288,7 @@ setx GOOGLE_SPEECH_KEY "another-key"
 Pinglish/
 ├── main.py                    # Flet UI, tray icon, hotkeys, mic wiring
 ├── converter.py               # Pinglish ⇄ Persian conversion and punctuation
+├── paths.py                   # Where resources and user files live
 ├── speech_fa.py               # Microphone capture and Persian speech recognition
 ├── community_patches.py       # Hand-curated spellings merged at runtime
 ├── data/
@@ -267,7 +301,8 @@ Pinglish/
 ├── launch-hidden.vbs          # Console-free launcher
 ├── create-desktop-shortcut.ps1
 ├── run.bat / run.ps1          # Launchers with a console, for debugging
-├── build_windows.ps1          # Standalone build with flet build
+├── installer/                 # pinglish.spec, pinglish.iss, build.ps1
+├── build_windows.ps1          # Alternative build with flet build (needs Flutter)
 └── requirements.txt
 ```
 
@@ -286,14 +321,20 @@ python scripts/build_community_dict.py
 ```
 
 <a id="building"></a>
-## ساخت نسخهٔ مستقل
+## ساخت نصب‌کننده
+
+به تنظیمات اجرا از سورس (بالا)، [PyInstaller](https://pyinstaller.org/) و
+[Inno Setup](https://jrsoftware.org/isinfo.php) نسخهٔ ۶ یا ۷ نیاز دارد.
 
 ```powershell
-.\.venv\Scripts\Activate.ps1
-.\build_windows.ps1
+.\.venv\Scripts\python.exe -m pip install pyinstaller
+.\installer\build.ps1 -Version 1.02
 ```
 
-خروجی در `build/windows/` بدون نصب پایتون اجرا می‌شود.
+این دستور `dist\Pinglish\Pinglish.exe` را می‌سازد (با PyInstaller؛ برنامهٔ پنجرهٔ
+Flet داخل آن است، پس هنگام اجرا چیزی دانلود نمی‌شود) و نصب‌کنندهٔ
+`dist\Pinglish-Setup-1.02.exe` را. نصب‌کننده را همراه با چک‌سام SHA-256 آن، که
+اسکریپت نمایش می‌دهد، در یک Release گیت‌هاب بارگذاری کنید.
 
 <a id="troubleshooting"></a>
 ## رفع مشکلات
