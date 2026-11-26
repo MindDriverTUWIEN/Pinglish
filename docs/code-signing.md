@@ -2,9 +2,15 @@
 
 Pinglish installers are built by the GitHub Actions workflow
 [`build-installer.yml`](../.github/workflows/build-installer.yml) from the
-public source code. Signing uses the free
-[SignPath Foundation](https://signpath.org/) program for open-source projects.
-Until SignPath is set up, the workflow builds the installer unsigned.
+public source code.
+
+> **Status (November 2026):** the SignPath Foundation application was declined
+> because the project does not yet have enough public visibility (stars,
+> forks, outside mentions). SignPath invites a new application once the
+> project is better known. Until signing is set up, the workflow builds the
+> installer **unsigned**, and the signing step below is skipped
+> automatically. The steps stay here for a later application, or for a paid
+> SignPath plan.
 
 ## One-time setup (maintainer)
 
@@ -41,11 +47,11 @@ Until SignPath is set up, the workflow builds the installer unsigned.
 ## Releasing a new version
 
 1. Update `APP_VERSION` in `main.py` and `CHANGELOG.md`.
-2. Write the release text in `docs/release-notes/v1.03.md`; commit and push.
-3. Create and push a tag, e.g. `git tag v1.03` and `git push origin v1.03`.
+2. Write the release text in `docs/release-notes/v<version>.md`; commit and push.
+3. Create and push a tag, e.g. `git tag v1.04` and `git push origin v1.04`.
    The workflow creates a draft release with that text and the installer.
-4. Approve the signing request on signpath.io. The workflow waits, then
-   attaches the signed installer to the draft.
+4. Only when signing is set up: approve the signing request on signpath.io.
+   The workflow waits, then attaches the signed installer to the draft.
 5. Review the draft release on GitHub and click **Publish release**.
 
 ## Requirements from SignPath Foundation that this project follows

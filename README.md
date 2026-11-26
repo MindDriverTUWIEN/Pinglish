@@ -337,13 +337,22 @@ Full text: [Privacy policy](PRIVACY.md).
 
 ## Code signing policy
 
-Free code signing provided by [SignPath.io](https://about.signpath.io/),
-certificate by [SignPath Foundation](https://signpath.org/).
-*(Application in progress: until it is approved, the installer is unsigned.)*
+The installer is **not code-signed yet**. Code signing proves who published a
+file; without it, Windows SmartScreen shows *"Windows protected your PC"*
+(click **More info → Run anyway**). Signing is planned once the project
+qualifies for a free open-source certificate or uses a low-cost one.
 
-- Installers are built from this repository by the GitHub Actions workflow
+Until then, you can check that an installer is genuine:
+
+- Installers are built only from this repository's public source code, by the
+  GitHub Actions workflow
   [`build-installer.yml`](.github/workflows/build-installer.yml) on
-  GitHub-hosted runners, and every release is approved manually before signing.
+  GitHub-hosted runners.
+- Every release lists the installer's SHA-256 checksum. Compare it with
+  `Get-FileHash .\Pinglish-Setup-<version>.exe` in PowerShell.
+- Download Pinglish only from the
+  [releases page](https://github.com/MindDriverTUWIEN/Pinglish/releases) of
+  this repository.
 - Committers and reviewers: [MindDriverTUWIEN](https://github.com/MindDriverTUWIEN)
 - Approvers: [MindDriverTUWIEN](https://github.com/MindDriverTUWIEN)
 - Privacy policy: this program does not transfer any information to other
