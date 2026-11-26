@@ -329,12 +329,12 @@ python scripts/build_community_dict.py
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install pyinstaller
-.\installer\build.ps1 -Version 1.04
+.\installer\build.ps1 -Version 1.05
 ```
 
 این دستور `dist\Pinglish\Pinglish.exe` را می‌سازد (با PyInstaller؛ برنامهٔ پنجرهٔ
 Flet داخل آن است، پس هنگام اجرا چیزی دانلود نمی‌شود) و نصب‌کنندهٔ
-`dist\Pinglish-Setup-1.04.exe` را. نصب‌کننده را همراه با چک‌سام SHA-256 آن، که
+`dist\Pinglish-Setup-1.05.exe` را. نصب‌کننده را همراه با چک‌سام SHA-256 آن، که
 اسکریپت نمایش می‌دهد، در یک Release گیت‌هاب بارگذاری کنید.
 
 <a id="troubleshooting"></a>
