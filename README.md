@@ -116,16 +116,32 @@ press it again or press `Esc`. The last words before you stop are kept.
 
 ## Speech key
 
-Speech recognition uses Google's web speech endpoint (`fa-IR`), which needs an
-API key. The key is not part of this repository. Provide it in either way:
+Speech recognition sends audio to `www.google.com/speech-api/v2/recognize`
+(`fa-IR`), the undocumented endpoint Chrome uses for its own dictation. It is
+not Google Cloud's paid Speech-to-Text API.
+
+**You do not need a Google account or your own API key.** The endpoint only
+asks for a key parameter, and the app uses the public key that ships in the
+Chromium source code, as many open-source dictation tools do. It is not linked
+to any Google account, so no costs can arise.
+
+The key is kept out of this repository only because GitHub flags any key-like
+string in code. Add it once in either way:
 
 ```powershell
-# Option 1: an environment variable
-setx GOOGLE_SPEECH_KEY "your-key"
+# Option 1: a local file that git ignores
+Set-Content data\speech_key.txt "<Chromium speech key>"
 
-# Option 2: a local file that git ignores
-Set-Content data\speech_key.txt "your-key"
+# Option 2: an environment variable
+setx GOOGLE_SPEECH_KEY "<Chromium speech key>"
 ```
+
+> [!NOTE]
+> This endpoint is unofficial. Google publishes no limits or guarantees for it
+> and may restrict or switch it off at any time. If that happens, the mic stops
+> working, but text conversion is unaffected. A key from Google Cloud's
+> Speech-to-Text API does not work here, because that service uses a different
+> address and request format.
 
 Text conversion works fully without a key and without internet access.
 
@@ -139,7 +155,7 @@ is ignored by git.
 | `data/community_dict.txt` | Main Pinglish → Persian dictionary (shipped) |
 | `data/user_corrections.txt` | Spellings you picked in Suggested Alternatives |
 | `data/settings.json` | Hotkey, auto-copy and window size |
-| `data/speech_key.txt` | Optional speech key |
+| `data/speech_key.txt` | Speech key for the mic (see above) |
 | `data/finglish_launch.log` | Start-up and microphone log for troubleshooting |
 
 ## How it works
