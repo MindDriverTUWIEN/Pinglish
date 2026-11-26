@@ -154,7 +154,7 @@ setx GOOGLE_SPEECH_KEY "another-key"
 > ولی تبدیل متن آسیبی نمی‌بیند و می‌توانید به
 > [کلید Google Cloud خودتان](#own-cloud-key) بروید.
 
-<div dir=\"rtl\">
+<div dir="rtl">
 
 تبدیل متن کاملاً آفلاین کار می‌کند.
 
@@ -196,7 +196,7 @@ setx GOOGLE_SPEECH_KEY "another-key"
 > در پروژه‌تان یک [هشدار بودجه](https://cloud.google.com/billing/docs/how-to/budgets)
 > تنظیم کنید و هرگز کلیدتان را منتشر نکنید.
 
-<div dir=\"rtl\">
+<div dir="rtl">
 
 <a id="data-files"></a>
 ## تنظیمات و فایل‌های داده
