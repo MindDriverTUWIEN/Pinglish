@@ -78,3 +78,83 @@ Type: files; Name: "{app}\pinglish.ini"
 Filename: "{sys}\taskkill.exe"; Parameters: "/F /IM {#AppExe}"; Flags: runhidden; RunOnceId: "StopPinglish"
 
 ; User data in %LOCALAPPDATA%\Pinglish (corrections, settings) is kept on uninstall.
+
+[Code]
+// Tell the user when Pinglish is already installed, instead of silently
+// installing again. Inno Setup stores the installed version under the AppId.
+const
+  UninstallKey = 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{6F1C2A4E-5B7D-4C3A-9E2F-8D1B0A7C6E54}_is1';
+
+function GetInstalledVersion(var Version: String): Boolean;
+begin
+  // Per-user install (the default) first, then an install for all users.
+  Result := RegQueryStringValue(HKCU, UninstallKey, 'DisplayVersion', Version);
+  if not Result then
+    Result := RegQueryStringValue(HKLM64, UninstallKey, 'DisplayVersion', Version);
+  if not Result then
+    Result := RegQueryStringValue(HKLM32, UninstallKey, 'DisplayVersion', Version);
+end;
+
+// Takes the next number off a dotted version: "1.03" gives 1, then 3.
+function NextVersionPart(var S: String): Integer;
+var
+  P: Integer;
+begin
+  P := Pos('.', S);
+  if P = 0 then
+  begin
+    Result := StrToIntDef(Trim(S), 0);
+    S := '';
+  end
+  else
+  begin
+    Result := StrToIntDef(Trim(Copy(S, 1, P - 1)), 0);
+    Delete(S, 1, P);
+  end;
+end;
+
+// 1 when A is newer than B, -1 when older, 0 when the same.
+function CompareVersions(A, B: String): Integer;
+var
+  X, Y: Integer;
+begin
+  Result := 0;
+  while (Result = 0) and ((A <> '') or (B <> '')) do
+  begin
+    X := NextVersionPart(A);
+    Y := NextVersionPart(B);
+    if X > Y then
+      Result := 1
+    else if X < Y then
+      Result := -1;
+  end;
+end;
+
+function InitializeSetup(): Boolean;
+var
+  Installed: String;
+  Cmp: Integer;
+begin
+  Result := True;
+  if not GetInstalledVersion(Installed) then
+    Exit;
+
+  Cmp := CompareVersions(Installed, '{#AppVersion}');
+  if Cmp = 0 then
+    Result := SuppressibleMsgBox(
+      '{#AppName} {#AppVersion} is already installed on this computer.' + #13#10#13#10 +
+      'Do you want to install it again? This repairs the installation.' + #13#10 +
+      'Your settings and word corrections are kept.',
+      mbConfirmation, MB_YESNO, IDYES) = IDYES
+  else if Cmp > 0 then
+    Result := SuppressibleMsgBox(
+      'A newer version of {#AppName} (' + Installed + ') is already installed.' + #13#10#13#10 +
+      'Do you want to replace it with the older version {#AppVersion}?',
+      mbConfirmation, MB_YESNO or MB_DEFBUTTON2, IDNO) = IDYES
+  else
+    Result := SuppressibleMsgBox(
+      '{#AppName} ' + Installed + ' is installed on this computer.' + #13#10#13#10 +
+      'Setup will update it to version {#AppVersion}.' + #13#10 +
+      'Your settings and word corrections are kept.',
+      mbInformation, MB_OKCANCEL, IDOK) = IDOK;
+end;
