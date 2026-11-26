@@ -67,8 +67,8 @@ alternative spellings, and turns spoken Persian into text live.
 ## Installation
 
 ```powershell
-git clone https://github.com/MindDriverTUWIEN/pinglish.git
-cd pinglish
+git clone https://github.com/MindDriverTUWIEN/Pinglish.git
+cd Pinglish
 
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
@@ -160,7 +160,7 @@ spelling converts back to the same word.
 ## Project structure
 
 ```text
-pinglish/
+Pinglish/
 ├── main.py                    # Flet UI, tray icon, hotkeys, mic wiring
 ├── converter.py               # Pinglish ⇄ Persian conversion and punctuation
 ├── speech_fa.py               # Microphone capture and Persian speech recognition
