@@ -364,15 +364,22 @@ Flet داخل آن است، پس هنگام اجرا چیزی دانلود نم�
 <a id="code-signing-policy"></a>
 ## سیاست امضای کد (Code signing policy)
 
-Free code signing provided by [SignPath.io](https://about.signpath.io/),
-certificate by [SignPath Foundation](https://signpath.org/).
+نصب‌کننده **هنوز امضای دیجیتال (code signing) ندارد**. امضای کد نشان می‌دهد چه کسی
+فایل را منتشر کرده است؛ بدون آن، Windows SmartScreen پیام
+*"Windows protected your PC"* را نشان می‌دهد (روی **More info → Run anyway** کلیک کنید).
+امضای کد در برنامه است، وقتی پروژه بتواند گواهی رایگان متن‌باز بگیرد یا از یک گواهی
+کم‌هزینه استفاده کند.
 
-امضای کد رایگان توسط SignPath.io و گواهی از SignPath Foundation.
-*(درخواست در حال بررسی است؛ تا تأیید آن، نصب‌کننده امضا ندارد.)*
+تا آن زمان می‌توانید اصل بودن نصب‌کننده را این‌طور بررسی کنید:
 
-- نصب‌کننده‌ها با workflow گیت‌هاب
-  [`build-installer.yml`](.github/workflows/build-installer.yml) از همین مخزن و روی
-  ماشین‌های خود گیت‌هاب ساخته می‌شوند و هر نسخه پیش از امضا دستی تأیید می‌شود.
+- نصب‌کننده‌ها فقط از کد منبع عمومی همین مخزن و با workflow گیت‌هاب
+  [`build-installer.yml`](.github/workflows/build-installer.yml) روی ماشین‌های خود
+  گیت‌هاب ساخته می‌شوند.
+- برای هر نسخه، چک‌سام SHA-256 نصب‌کننده نوشته شده است. آن را در PowerShell با
+  `Get-FileHash .\Pinglish-Setup-<version>.exe` مقایسه کنید.
+- Pinglish را فقط از
+  [صفحهٔ نسخه‌ها (Releases)](https://github.com/MindDriverTUWIEN/Pinglish/releases)
+  همین مخزن دانلود کنید.
 - مشارکت‌کنندگان و بازبینان (Committers and reviewers): [MindDriverTUWIEN](https://github.com/MindDriverTUWIEN)
 - تأییدکنندگان (Approvers): [MindDriverTUWIEN](https://github.com/MindDriverTUWIEN)
 - حریم خصوصی: این برنامه هیچ اطلاعاتی به سیستم‌های دیگر نمی‌فرستد، مگر وقتی کاربر

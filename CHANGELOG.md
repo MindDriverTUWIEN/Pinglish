@@ -5,6 +5,11 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+- README, release notes and the signing guide now say plainly that the
+  installer is not code-signed (the SignPath Foundation application was
+  declined for now), and how to check a download with its checksum.
+
 ## [1.04] - 2026-11-26
 
 ### Changed
