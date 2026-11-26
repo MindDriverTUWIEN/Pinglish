@@ -508,6 +508,9 @@ class Settings:
                 settings = cls(**{**cls().__dict__, **data})
             except Exception:
                 pass
+        # A size saved while the window was hidden (e.g. 160 x 28) is not real.
+        if settings.window_width < 1100 or settings.window_height < 860:
+            settings.window_width, settings.window_height = cls().window_width, cls().window_height
         # Live convert is the app's main job, so every launch starts with it on.
         # Switching it off lasts until the app restarts.
         settings.live_conversion = True
@@ -1644,8 +1647,13 @@ def main(page: ft.Page):
         _log_launch("Shutting down application")
 
         try:
-            settings.window_width = int(page.window.width or 1100)
-            settings.window_height = int(page.window.height or 720)
+            # Hidden in the tray or minimized, the window reports a tiny size
+            # (seen: 160 x 28). Only keep a size the window really had on screen.
+            width = int(page.window.width or 0)
+            height = int(page.window.height or 0)
+            if width >= 1100 and height >= 860:
+                settings.window_width = width
+                settings.window_height = height
             settings.save()
         except Exception:
             pass

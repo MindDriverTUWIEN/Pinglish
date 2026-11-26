@@ -3,6 +3,12 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Fixed
+- A window size saved while Pinglish was hidden in the tray (e.g. 160 x 28)
+  is no longer kept.
+
 ## [1.03] - 2026-11-26
 
 ### Added
