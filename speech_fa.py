@@ -67,22 +67,22 @@ class SpeechError(Exception):
 
 
 _KEY_FILE = Path(__file__).resolve().parent / "data" / "speech_key.txt"
+# Chromium's public key for its web speech service. It is not tied to any
+# user's account, and it is the same default the open-source SpeechRecognition
+# library ships for recognize_google(). Built in so the mic works right after
+# installing. See README, "Speech key".
+_DEFAULT_SPEECH_KEY = "AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw"
 
 
 def _speech_key() -> str:
-    """The speech API key: GOOGLE_SPEECH_KEY, else data/speech_key.txt.
-
-    Kept out of the source so it is never published. See README, "Speech key".
-    """
+    """GOOGLE_SPEECH_KEY, else data/speech_key.txt, else the built-in default."""
     key = os.environ.get("GOOGLE_SPEECH_KEY", "").strip()
     if not key and _KEY_FILE.is_file():
-        key = _KEY_FILE.read_text(encoding="utf-8").strip()
-    if not key:
-        raise SpeechError(
-            "No speech key set. Add one in data/speech_key.txt, or your own Google Cloud "
-            "key in data/google_cloud_key.txt (see README)."
-        )
-    return key
+        try:
+            key = _KEY_FILE.read_text(encoding="utf-8").strip()
+        except OSError:
+            key = ""
+    return key or _DEFAULT_SPEECH_KEY
 
 
 def probe_microphone() -> str:

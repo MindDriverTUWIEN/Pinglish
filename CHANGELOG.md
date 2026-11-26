@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- The mic works right after installation: Chromium's public speech key is built
+  in as the default.
 - Optional own Google Cloud Speech-to-Text key (`data/google_cloud_key.txt`
   or `GOOGLE_CLOUD_SPEECH_KEY`), used instead of the free endpoint when set.
 
@@ -22,7 +24,7 @@ First public release.
 - Persian punctuation (`؟` `،` `؛`) in Persian Output, including spoken
   "علامت سوال" after a pause.
 - Taskbar pin name "Pinglish" with the app icon and launcher.
-- The speech key is read from `GOOGLE_SPEECH_KEY` or `data/speech_key.txt`.
+- The free-endpoint key can be overridden with `GOOGLE_SPEECH_KEY` or `data/speech_key.txt`.
 
 ### Fixed
 - Live speech results now appear without moving the mouse.

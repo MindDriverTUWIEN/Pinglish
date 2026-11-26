@@ -62,8 +62,7 @@ alternative spellings, and turns spoken Persian into text live.
 
 - Windows 10 or 11 (the app uses WASAPI audio and Win32 window APIs)
 - Python 3.11 or newer
-- For speech only: a microphone, an internet connection and a
-  [speech key](#speech-key)
+- For speech only: a microphone and an internet connection
 
 ## Installation
 
@@ -121,29 +120,31 @@ Speech recognition sends audio to `www.google.com/speech-api/v2/recognize`
 (`fa-IR`), the undocumented endpoint Chrome uses for its own dictation. It is
 not Google Cloud's paid Speech-to-Text API.
 
-**You do not need a Google account or your own API key.** The endpoint only
-asks for a key parameter, and the app uses the public key that ships in the
-Chromium source code, as many open-source dictation tools do. It is not linked
-to any Google account, so no costs can arise.
+**Nothing to set up: the mic works right after installation.** The endpoint
+only asks for a key parameter, and the app has Chromium's public key built in
+(`_DEFAULT_SPEECH_KEY` in `speech_fa.py`). It is the same default key the
+open-source [SpeechRecognition](https://github.com/Uberi/speech_recognition)
+library uses for `recognize_google()`. It is not linked to your Google account
+or anyone else's, so no costs can arise. You need no Google account and no
+key of your own.
 
-The key is kept out of this repository only because GitHub flags any key-like
-string in code. Add it once in either way:
+To use a different key for this endpoint, it overrides the built-in one:
 
 ```powershell
 # Option 1: a local file that git ignores
-Set-Content data\speech_key.txt "<Chromium speech key>"
+Set-Content data\speech_key.txt "another-key"
 
 # Option 2: an environment variable
-setx GOOGLE_SPEECH_KEY "<Chromium speech key>"
+setx GOOGLE_SPEECH_KEY "another-key"
 ```
 
 > [!NOTE]
 > This endpoint is unofficial. Google publishes no limits or guarantees for it
-> and may restrict or switch it off at any time. If that happens, the mic stops
-> working, but text conversion is unaffected. If that happens, use
+> and may restrict or switch it off at any time. Then the mic stops working,
+> but text conversion is unaffected, and you can switch to
 > [your own Google Cloud key](#using-your-own-google-cloud-key).
 
-Text conversion works fully without a key and without internet access.
+Text conversion works fully offline.
 
 ## Using your own Google Cloud key
 
@@ -190,7 +191,7 @@ is ignored by git.
 | `data/community_dict.txt` | Main Pinglish → Persian dictionary (shipped) |
 | `data/user_corrections.txt` | Spellings you picked in Suggested Alternatives |
 | `data/settings.json` | Hotkey, auto-copy and window size |
-| `data/speech_key.txt` | Speech key for the free endpoint (see above) |
+| `data/speech_key.txt` | Optional: overrides the built-in free-endpoint key |
 | `data/google_cloud_key.txt` | Optional: your own Google Cloud key |
 | `data/finglish_launch.log` | Start-up and microphone log for troubleshooting |
 
