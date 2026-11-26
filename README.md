@@ -305,12 +305,12 @@ Needs the source setup above, [PyInstaller](https://pyinstaller.org/) and
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install pyinstaller
-.\installer\build.ps1 -Version 1.04
+.\installer\build.ps1 -Version 1.05
 ```
 
 This creates `dist\Pinglish\Pinglish.exe` (PyInstaller, with Flet's window
 program bundled, so nothing is downloaded at start-up) and the installer
-`dist\Pinglish-Setup-1.04.exe`. Upload the installer to a GitHub release
+`dist\Pinglish-Setup-1.05.exe`. Upload the installer to a GitHub release
 together with its SHA-256 checksum, which the script prints.
 
 ## Troubleshooting

@@ -42,7 +42,7 @@ import pystray
 from PIL import Image, ImageDraw
 
 # Local clean converter (no prints)
-from paths import FLET_CLIENT_DIR, FROZEN, RES_DIR, USER_DIR, speech_enabled
+from paths import FLET_CLIENT_DIR, FROZEN, PACKAGED, PACKAGED_APP_ID, RES_DIR, USER_DIR, speech_enabled
 from converter import apply_user_correction, convert, convert_word, persian_punctuation, to_finglish
 from speech_fa import SpeechError, listen_persian, probe_microphone
 
@@ -91,7 +91,8 @@ def _show_window_from_tray(page: ft.Page, source: str = "unknown"):
 # page.window.icon often never replaces that logo. Paint our .ico onto the
 # real window, and give the Flet process its own AppUserModelID so Windows
 # does not keep grouping this app under the shared Flet icon.
-APP_USER_MODEL_ID = "Local.Finglish.Desktop"
+# The MSIX (Store) version must keep the identity its package gives it.
+APP_USER_MODEL_ID = PACKAGED_APP_ID or "Local.Finglish.Desktop"
 _native_icons: Dict[str, int] = {"big": 0, "small": 0}
 
 
@@ -252,12 +253,17 @@ def _set_taskbar_pin_identity(hwnd: int, icon_path: str) -> bool:
         set_value = proto(ctypes.c_long, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p)(vtbl[6])
         commit = proto(ctypes.c_long, ctypes.c_void_p)(vtbl[7])
         fmtid = _guid(_PKEY_FMTID)
-        values = [
-            (_PKEY_RELAUNCH_COMMAND, _pin_relaunch_command()),
-            (_PKEY_RELAUNCH_NAME, APP_NAME),
-            (_PKEY_RELAUNCH_ICON, f"{icon_path},0"),
-            (_PKEY_APP_ID, APP_USER_MODEL_ID),  # last: it switches the others on
-        ]
+        if PACKAGED:
+            # The package already names the pin and starts the app through
+            # Windows; a start command pointing into WindowsApps would fail.
+            values = [(_PKEY_APP_ID, APP_USER_MODEL_ID)]
+        else:
+            values = [
+                (_PKEY_RELAUNCH_COMMAND, _pin_relaunch_command()),
+                (_PKEY_RELAUNCH_NAME, APP_NAME),
+                (_PKEY_RELAUNCH_ICON, f"{icon_path},0"),
+                (_PKEY_APP_ID, APP_USER_MODEL_ID),  # last: it switches the others on
+            ]
         ok = True
         try:
             for pid, text in values:
@@ -288,7 +294,7 @@ def _schedule_native_window_icon():
 
 # ----------------------------- Constants & Paths -----------------------------
 APP_NAME = "Pinglish"
-APP_VERSION = "1.04"
+APP_VERSION = "1.05"
 APP_DIR = RES_DIR      # read-only resources (assets/, launcher)
 DATA_DIR = USER_DIR    # settings, log: data/ from source, %LOCALAPPDATA%\Pinglish installed
 if FROZEN and FLET_CLIENT_DIR.is_dir():
@@ -1917,6 +1923,7 @@ if __name__ == "__main__":
         os.environ["FLET_APP_USER_MODEL_ID"] = APP_USER_MODEL_ID
         # Before flet.exe starts, so the window joins this process's job.
         _log_launch(f"Window closes with the app: {_close_window_with_app()}")
+        _log_launch(f"Packaged (MSIX): {PACKAGED_APP_ID or 'no'}")
         _log_launch("Starting ft.run with hidden launcher")
         ft.run(main, assets_dir=assets_dir)
     except Exception as e:

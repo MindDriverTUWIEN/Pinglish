@@ -45,7 +45,7 @@ jobs:
         id: version
         shell: pwsh
         run: |
-          $v = if ("${{ github.ref_type }}" -eq "tag") { "${{ github.ref_name }}".TrimStart("v") } else { "1.04" }
+          $v = if ("${{ github.ref_type }}" -eq "tag") { "${{ github.ref_name }}".TrimStart("v") } else { "1.05" }
           "version=$v" >> $env:GITHUB_OUTPUT
 
       - name: Build Pinglish.exe and the installer
@@ -89,3 +89,23 @@ jobs:
           # draft: nothing is public until the maintainer clicks Publish.
           body_path: docs/release-notes/${{ github.ref_name }}.md
           draft: true
+
+      # ---- Microsoft Store package (MSIX) ----
+      # Runs after the .exe installer is finished and attached, so a problem
+      # here never touches the installer, the release, or winget. The MSIX is
+      # only uploaded as a workflow artifact: it is for Partner Center, which
+      # signs it. It is not attached to the release (unsigned MSIX files do
+      # not install by double-click).
+      - name: Build the MSIX package
+        shell: pwsh
+        run: .\installer\build_msix.ps1 -Version ${{ steps.version.outputs.version }}
+
+      - name: Test the MSIX package (install, start, single instance, remove)
+        shell: pwsh
+        run: .\installer\test_msix.ps1 -Version ${{ steps.version.outputs.version }}
+
+      - name: Upload the MSIX package
+        uses: actions/upload-artifact@v7
+        with:
+          name: Pinglish-${{ steps.version.outputs.version }}-msix
+          path: dist/Pinglish-${{ steps.version.outputs.version }}.msix

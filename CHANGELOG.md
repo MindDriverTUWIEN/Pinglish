@@ -5,11 +5,20 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.05] - 2026-11-26
+
 ### Added
+- Microsoft Store package (MSIX), built and tested by GitHub Actions next to
+  the .exe installer. Windows asks before the first microphone use; starting
+  with Windows is off by default and can be switched on in Settings; typing
+  `pinglish` in the Run box (Win+R) starts the app.
 - winget manifests for 1.04 in `packaging/winget/`, with steps to submit them
   to the Windows Package Manager catalog.
 
 ### Changed
+- In the Store version, Pinglish leaves its taskbar identity and start
+  command to Windows, so pinning it to the taskbar works there. The .exe
+  version behaves as before.
 - README, release notes and the signing guide now say plainly that the
   installer is not code-signed (the SignPath Foundation application was
   declined for now), and how to check a download with its checksum.
