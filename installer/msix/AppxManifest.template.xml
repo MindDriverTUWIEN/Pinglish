@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   MSIX package description for Pinglish (Microsoft Store).
-  build_msix.ps1 fills the @@...@@ values from identity.json and the version.
+  build_msix.ps1 fills the placeholder values from identity.json and the version.
   Pinglish is a desktop app, so it runs with full trust like the .exe install.
 -->
 <Package
