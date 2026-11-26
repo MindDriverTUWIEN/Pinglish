@@ -28,7 +28,7 @@
 
 <p align="center">
   <img src="docs/screenshots/main-window.png" alt="پنجرهٔ اصلی Pinglish پس از اجرا" width="720">
-  <br><em>برنامه هنگام باز شدن: Pinglish Input، Suggested Alternatives و Persian Output.</em>
+  <br><em>**برنامه هنگام باز شدن**: Pinglish Input، Suggested Alternatives و Persian Output.</em>
 </p>
 
 <p align="center">
@@ -38,7 +38,7 @@
 
 <p align="center">
   <img src="docs/screenshots/speech-alternatives.png" alt="جملهٔ گفته‌شده با فهرست املاهای باز" width="720">
-  <br><em>گفته‌شده با میکروفون: <code>salam hal shoma chetor ast?</code> ← <code>سلام حال شما چطور است؟</code>، با فهرست املاهای «حال» باز.</em>
+  <br><em> **با میکروفون**: <code>salam hal shoma chetor ast?</code> ← <code>سلام حال شما چطور است؟</code>، با فهرست املاهای «حال» باز.</em>
 </p>
 
 ## فهرست
