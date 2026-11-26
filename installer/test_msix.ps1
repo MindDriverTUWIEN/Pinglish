@@ -4,7 +4,7 @@
 # app, then removes the package and the certificate again.
 #   .\installer\test_msix.ps1 -Version 1.05
 # Needs administrator rights (to trust the throwaway certificate).
-param([string]$Version = "1.04")
+param([string]$Version = "1.05")
 
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot

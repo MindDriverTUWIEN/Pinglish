@@ -45,7 +45,7 @@ jobs:
         id: version
         shell: pwsh
         run: |
-          $v = if ("${{ github.ref_type }}" -eq "tag") { "${{ github.ref_name }}".TrimStart("v") } else { "1.04" }
+          $v = if ("${{ github.ref_type }}" -eq "tag") { "${{ github.ref_name }}".TrimStart("v") } else { "1.05" }
           "version=$v" >> $env:GITHUB_OUTPUT
 
       - name: Build Pinglish.exe and the installer
