@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Flet / PyInstaller build output
+build/
+dist/
+*.spec
+
+# App data: only the shipped dictionary is published.
+# History, corrections, settings, logs and the speech key stay on your PC.
+data/*
+!data/community_dict.txt
+!data/community_dict_meta.json
+*.log
+
+# Local tooling that is not part of the app
+mcps/
+.claude/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store

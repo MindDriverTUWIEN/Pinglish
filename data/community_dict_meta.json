@@ -1,0 +1,11 @@
+{
+  "total_entries": 2768,
+  "single_word": 2651,
+  "multi_word": 117,
+  "format": "tab-separated (finglish\\tpersian)",
+  "sources": [
+    "elektito/finglish f2p-dict.txt (MIT)",
+    "community_patches.py",
+    "scripts/build_community_dict.py EXTRA_ENTRIES"
+  ]
+}

@@ -1,0 +1,12 @@
+# Pinned to the last known-good set (Flet 0.85 API used by main.py).
+# A floating flet>=0.85 now resolves to 1.x, which this app is not written for.
+flet==0.85.3
+flet-desktop==0.85.3
+pystray==0.19.5
+Pillow==12.2.0
+pyperclip==1.11.0
+keyboard==0.13.5
+pyautogui==0.9.54
+finglish==1.5.1
+sounddevice==0.5.6
+numpy==2.5.5
