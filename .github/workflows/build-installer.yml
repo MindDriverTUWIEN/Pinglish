@@ -1,11 +1,12 @@
 # Builds the Windows installer from source on GitHub-hosted runners.
 #
 # - Every run uploads the unsigned installer as a workflow artifact.
-# - Once SignPath is set up (repository variable SIGNPATH_ORGANIZATION_ID and
-#   secret SIGNPATH_API_TOKEN, see docs/code-signing.md), the installer is
-#   submitted to SignPath and signed after manual approval.
+# - Signing is not set up (the SignPath Foundation application was declined
+#   for now). The signing steps are skipped until the repository variable
+#   SIGNPATH_ORGANIZATION_ID and secret SIGNPATH_API_TOKEN exist; see
+#   docs/code-signing.md.
 # - Pushing a tag such as v1.03 creates a draft release of that tag with the
-#   text in docs/release-notes/v1.03.md and attaches the installer (signed if
+#   text in docs/release-notes/<tag>.md and attaches the installer (signed if
 #   available). Review the draft on GitHub and click Publish.
 
 name: Build installer
