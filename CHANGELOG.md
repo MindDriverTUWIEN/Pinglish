@@ -5,6 +5,16 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.04] - 2026-11-26
+
+### Changed
+- Only one Pinglish runs at a time. Opening it again (Start menu, desktop
+  icon) brings the running window to the front instead of starting a second
+  copy.
+- The installer says when Pinglish is already installed: it asks before
+  installing the same version again, says when it updates an older version,
+  and asks before replacing a newer version with an older one.
+
 ### Fixed
 - A window size saved while Pinglish was hidden in the tray (e.g. 160 x 28)
   is no longer kept.
