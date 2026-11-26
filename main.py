@@ -288,7 +288,7 @@ def _schedule_native_window_icon():
 
 # ----------------------------- Constants & Paths -----------------------------
 APP_NAME = "Pinglish"
-APP_VERSION = "1.03"
+APP_VERSION = "1.04"
 APP_DIR = RES_DIR      # read-only resources (assets/, launcher)
 DATA_DIR = USER_DIR    # settings, log: data/ from source, %LOCALAPPDATA%\Pinglish installed
 if FROZEN and FLET_CLIENT_DIR.is_dir():
@@ -1734,6 +1734,11 @@ def main(page: ft.Page):
 
     page.window.on_event = on_window_event
 
+    # Opening Pinglish again while it runs brings this window back, like Strg+D.
+    _listen_for_second_launch(
+        lambda: page.run_thread(lambda: _show_window_from_tray(page, "second launch"))
+    )
+
     _log_launch("on_close handler installed (X hides window to tray, keeps background)")
 
     status_text.value = (
@@ -1752,6 +1757,83 @@ def main(page: ft.Page):
     if speech_enabled():
         threading.Thread(target=_probe_mic, daemon=True).start()
     print("DEBUG: main() setup complete. ft.run should now show the window. (If you don't see the GUI, an error likely happened after this or in a background thread.)")
+
+
+# ----------------------------- Single instance -----------------------------
+# Only one Pinglish runs per Windows session. A second launch (Start menu,
+# desktop icon, autostart) asks the running one to show its window, then exits.
+# Two copies would also fight over the Strg+D hotkey and the tray icon.
+SINGLE_INSTANCE_MUTEX = "PinglishSingleInstance"
+SHOW_WINDOW_EVENT = "PinglishShowWindow"
+_instance_handles: Dict[str, int] = {}  # kept open for the life of this process
+
+
+def _claim_single_instance() -> bool:
+    """True when no other Pinglish is running. Otherwise wakes the running one."""
+    try:
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        kernel32.CreateMutexW.restype = wintypes.HANDLE
+        kernel32.CreateMutexW.argtypes = [ctypes.c_void_p, wintypes.BOOL, wintypes.LPCWSTR]
+        kernel32.CreateEventW.restype = wintypes.HANDLE
+        kernel32.CreateEventW.argtypes = [ctypes.c_void_p, wintypes.BOOL, wintypes.BOOL, wintypes.LPCWSTR]
+        kernel32.OpenEventW.restype = wintypes.HANDLE
+        kernel32.OpenEventW.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.LPCWSTR]
+        kernel32.SetEvent.argtypes = [wintypes.HANDLE]
+        kernel32.CloseHandle.argtypes = [wintypes.HANDLE]
+
+        mutex = kernel32.CreateMutexW(None, False, SINGLE_INSTANCE_MUTEX)
+        already_running = ctypes.get_last_error() == 183  # ERROR_ALREADY_EXISTS
+        if not mutex:
+            return True  # cannot tell; never block the app from starting
+        if not already_running:
+            _instance_handles["mutex"] = mutex
+            # Auto-reset event: each SetEvent from a later launch wakes the listener once.
+            event = kernel32.CreateEventW(None, False, False, SHOW_WINDOW_EVENT)
+            if event:
+                _instance_handles["event"] = event
+            return True
+
+        kernel32.CloseHandle(mutex)
+        # This process was just started by the user, so it may hand the right
+        # to come to the front to the running window (another process).
+        try:
+            ctypes.windll.user32.AllowSetForegroundWindow(-1)  # ASFW_ANY
+        except Exception:
+            pass
+        # The first copy creates the event right after its mutex; wait briefly
+        # in case both were started at the same moment.
+        for _ in range(25):
+            event = kernel32.OpenEventW(0x0002, False, SHOW_WINDOW_EVENT)  # EVENT_MODIFY_STATE
+            if event:
+                kernel32.SetEvent(event)
+                kernel32.CloseHandle(event)
+                break
+            time.sleep(0.2)
+        return False
+    except Exception as ex:
+        _log_launch(f"Single-instance check failed: {ex}")
+        return True
+
+
+def _listen_for_second_launch(on_show) -> None:
+    """Call on_show() each time another launch asks this Pinglish to appear."""
+    event = _instance_handles.get("event")
+    if not event:
+        return
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel32.WaitForSingleObject.restype = wintypes.DWORD
+    kernel32.WaitForSingleObject.argtypes = [wintypes.HANDLE, wintypes.DWORD]
+
+    def wait_loop():
+        while True:
+            if kernel32.WaitForSingleObject(event, 0xFFFFFFFF) != 0:  # INFINITE; 0 = signaled
+                return
+            try:
+                on_show()
+            except Exception as ex:
+                _log_launch(f"Show on second launch failed: {ex}")
+
+    threading.Thread(target=wait_loop, daemon=True, name="second-launch").start()
 
 
 _APP_JOB = None  # keeps the job handle open for the life of this process
@@ -1825,6 +1907,9 @@ if __name__ == "__main__":
     # Run as a desktop Flet app (0.8x+ style).
     # ft.run(main, ...) is the current recommended way (main is positional).
     # Use absolute assets_dir for reliability when launched via VBS/pythonw.
+    if not _claim_single_instance():
+        _log_launch("Pinglish is already running - showed its window instead of starting again")
+        sys.exit(0)
     try:
         assets_dir = str((RES_DIR / "assets").resolve())
         # Must be set before flet.exe starts. The client reads this and stops
