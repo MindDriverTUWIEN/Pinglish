@@ -42,7 +42,7 @@ import pystray
 from PIL import Image, ImageDraw
 
 # Local clean converter (no prints)
-from paths import FLET_CLIENT_DIR, FROZEN, RES_DIR, USER_DIR
+from paths import FLET_CLIENT_DIR, FROZEN, RES_DIR, USER_DIR, speech_enabled
 from converter import apply_user_correction, convert, convert_word, persian_punctuation, to_finglish
 from speech_fa import SpeechError, listen_persian, probe_microphone
 
@@ -1196,6 +1196,13 @@ def main(page: ft.Page):
             status_text.value = "Stopping…"
             page.update()
             return
+        if not speech_enabled():
+            status_text.value = (
+                "Speech recognition is turned off. To use the mic, run the Pinglish "
+                "installer again and tick “Enable speech recognition”."
+            )
+            page.update()
+            return
         mic_listening = True
         mic_stop.clear()
         _set_mic_listening(True)
@@ -1734,7 +1741,8 @@ def main(page: ft.Page):
         except Exception as ex:
             _log_launch(f"Microphone probe failed: {ex}")
 
-    threading.Thread(target=_probe_mic, daemon=True).start()
+    if speech_enabled():
+        threading.Thread(target=_probe_mic, daemon=True).start()
     print("DEBUG: main() setup complete. ft.run should now show the window. (If you don't see the GUI, an error likely happened after this or in a background thread.)")
 
 

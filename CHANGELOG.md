@@ -10,6 +10,10 @@ All notable changes to this project are documented here. The format follows
   in as the default.
 - Windows installer (`Pinglish-Setup-<version>.exe`, Inno Setup) and a
   PyInstaller build that bundles Flet's window program; see `installer/`.
+- Privacy policy (PRIVACY.md), shown by the installer, with an option to turn
+  speech recognition off.
+- GitHub Actions workflow that builds the installer from source, ready for
+  free code signing via SignPath Foundation.
 - Optional own Google Cloud Speech-to-Text key (`data/google_cloud_key.txt`
   or `GOOGLE_CLOUD_SPEECH_KEY`), used instead of the free endpoint when set.
 

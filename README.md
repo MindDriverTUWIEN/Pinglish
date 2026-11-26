@@ -64,6 +64,7 @@ for details.
 - [Building the installer](#building-the-installer)
 - [Troubleshooting](#troubleshooting)
 - [Privacy](#privacy)
+- [Code signing policy](#code-signing-policy)
 - [Contributing](#contributing)
 - [Credits](#credits)
 - [License](#license)
@@ -329,7 +330,29 @@ together with its SHA-256 checksum, which the script prints.
 - Text conversion runs entirely on your PC.
 - When you use the mic, your audio is sent to Google's speech service for
   recognition. Nothing is sent while the mic is off.
-- Corrections and settings stay in `data/` on your PC.
+- The installer shows this and lets you turn speech recognition off.
+- Corrections and settings stay on your PC.
+
+Full text: [Privacy policy](PRIVACY.md).
+
+## Code signing policy
+
+Free code signing provided by [SignPath.io](https://about.signpath.io/),
+certificate by [SignPath Foundation](https://signpath.org/).
+*(Application in progress: until it is approved, the installer is unsigned.)*
+
+- Installers are built from this repository by the GitHub Actions workflow
+  [`build-installer.yml`](.github/workflows/build-installer.yml) on
+  GitHub-hosted runners, and every release is approved manually before signing.
+- Committers and reviewers: [MindDriverTUWIEN](https://github.com/MindDriverTUWIEN)
+- Approvers: [MindDriverTUWIEN](https://github.com/MindDriverTUWIEN)
+- Privacy policy: this program does not transfer any information to other
+  networked systems unless the user presses the mic button: then the recorded
+  speech is sent to Google for recognition, as described in the
+  [privacy policy](PRIVACY.md). Speech recognition can be turned off during
+  installation.
+
+Details: [docs/code-signing.md](docs/code-signing.md).
 
 ## Contributing
 

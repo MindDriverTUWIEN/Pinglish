@@ -67,6 +67,7 @@
 - [ساخت نصب‌کننده](#building)
 - [رفع مشکلات](#troubleshooting)
 - [حریم خصوصی](#privacy)
+- [سیاست امضای کد](#code-signing-policy)
 - [مشارکت](#contributing)
 - [قدردانی](#credits)
 - [مجوز](#license)
@@ -355,7 +356,31 @@ Flet داخل آن است، پس هنگام اجرا چیزی دانلود نم�
 - تبدیل متن کاملاً روی کامپیوتر شما انجام می‌شود.
 - وقتی از میکروفون استفاده می‌کنید، صدای شما برای تشخیص به سرویس گفتار Google
   فرستاده می‌شود. وقتی میکروفون خاموش است چیزی فرستاده نمی‌شود.
-- اصلاح‌ها و تنظیمات در `data/` روی کامپیوتر شما می‌مانند.
+- نصب‌کننده این را نشان می‌دهد و اجازه می‌دهد تشخیص گفتار را خاموش کنید.
+- اصلاح‌ها و تنظیمات روی کامپیوتر شما می‌مانند.
+
+متن کامل: [سیاست حفظ حریم خصوصی](PRIVACY.md).
+
+<a id="code-signing-policy"></a>
+## سیاست امضای کد (Code signing policy)
+
+Free code signing provided by [SignPath.io](https://about.signpath.io/),
+certificate by [SignPath Foundation](https://signpath.org/).
+
+امضای کد رایگان توسط SignPath.io و گواهی از SignPath Foundation.
+*(درخواست در حال بررسی است؛ تا تأیید آن، نصب‌کننده امضا ندارد.)*
+
+- نصب‌کننده‌ها با workflow گیت‌هاب
+  [`build-installer.yml`](.github/workflows/build-installer.yml) از همین مخزن و روی
+  ماشین‌های خود گیت‌هاب ساخته می‌شوند و هر نسخه پیش از امضا دستی تأیید می‌شود.
+- مشارکت‌کنندگان و بازبینان (Committers and reviewers): [MindDriverTUWIEN](https://github.com/MindDriverTUWIEN)
+- تأییدکنندگان (Approvers): [MindDriverTUWIEN](https://github.com/MindDriverTUWIEN)
+- حریم خصوصی: این برنامه هیچ اطلاعاتی به سیستم‌های دیگر نمی‌فرستد، مگر وقتی کاربر
+  دکمهٔ میکروفون را بزند؛ در آن صورت گفتار ضبط‌شده برای تشخیص به Google فرستاده
+  می‌شود، همان‌طور که در [سیاست حفظ حریم خصوصی](PRIVACY.md) آمده است. تشخیص گفتار
+  را می‌توان هنگام نصب خاموش کرد.
+
+جزئیات: [docs/code-signing.md](docs/code-signing.md).
 
 <a id="contributing"></a>
 ## مشارکت

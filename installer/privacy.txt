@@ -1,0 +1,25 @@
+PINGLISH - PRIVACY
+
+Pinglish has no accounts, no analytics, no telemetry and no ads.
+
+STAYS ON YOUR PC
+- Everything you type and its conversion to Persian (done entirely on your PC).
+- Your spelling corrections, settings and the start-up log, in
+  %LOCALAPPDATA%\Pinglish.
+
+SENT ONLY WHEN YOU USE THE MICROPHONE
+When you press the mic button, Pinglish sends your recorded speech over HTTPS
+to Google for speech recognition, phrase by phrase, until you stop it.
+Nothing is recorded or sent while the mic is off.
+- By default: Google's web speech service (the one Chrome uses).
+- With your own Google Cloud key: Google Cloud Speech-to-Text in your project.
+Google processes this audio under the Google Privacy Policy:
+https://policies.google.com/privacy
+Pinglish itself does not store your audio.
+
+TURNING IT OFF
+On the next page you can untick "Enable speech recognition". The mic button
+then does nothing and no audio is ever sent. Run this installer again to
+change the choice.
+
+Full policy: https://github.com/MindDriverTUWIEN/Pinglish/blob/main/PRIVACY.md

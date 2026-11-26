@@ -1,0 +1,84 @@
+# Builds the Windows installer from source on GitHub-hosted runners.
+#
+# - Every run uploads the unsigned installer as a workflow artifact.
+# - Once SignPath is set up (repository variable SIGNPATH_ORGANIZATION_ID and
+#   secret SIGNPATH_API_TOKEN, see docs/code-signing.md), the installer is
+#   submitted to SignPath and signed after manual approval.
+# - Pushing a tag such as v1.03 attaches the installer (signed if available)
+#   to the GitHub release of that tag.
+
+name: Build installer
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write   # attach the installer to a release
+  actions: read     # SignPath reads job details and the artifact
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\python.exe -m pip install --upgrade pip
+          .\.venv\Scripts\python.exe -m pip install -r requirements.txt pyinstaller==6.16.0
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup --no-progress -y
+
+      - name: Work out the version
+        id: version
+        shell: pwsh
+        run: |
+          $v = if ("${{ github.ref_type }}" -eq "tag") { "${{ github.ref_name }}".TrimStart("v") } else { "1.02" }
+          "version=$v" >> $env:GITHUB_OUTPUT
+
+      - name: Build Pinglish.exe and the installer
+        shell: pwsh
+        run: .\installer\build.ps1 -Version ${{ steps.version.outputs.version }}
+
+      - name: Upload unsigned installer
+        id: upload-unsigned
+        uses: actions/upload-artifact@v7
+        with:
+          name: Pinglish-Setup-${{ steps.version.outputs.version }}-unsigned
+          path: dist/Pinglish-Setup-${{ steps.version.outputs.version }}.exe
+
+      - name: Sign with SignPath (after manual approval)
+        if: vars.SIGNPATH_ORGANIZATION_ID != ''
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT_SLUG || 'pinglish' }}
+          signing-policy-slug: ${{ vars.SIGNPATH_SIGNING_POLICY_SLUG || 'release-signing' }}
+          github-artifact-id: ${{ steps.upload-unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          wait-for-completion-timeout-in-seconds: 86400
+          output-artifact-directory: signed
+
+      - name: Upload signed installer
+        if: vars.SIGNPATH_ORGANIZATION_ID != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: Pinglish-Setup-${{ steps.version.outputs.version }}-signed
+          path: signed/*.exe
+
+      - name: Attach installer to the release
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ vars.SIGNPATH_ORGANIZATION_ID != '' && 'signed/*.exe' || format('dist/Pinglish-Setup-{0}.exe', steps.version.outputs.version) }}

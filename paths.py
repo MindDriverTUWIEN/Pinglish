@@ -27,3 +27,21 @@ USER_DIR.mkdir(parents=True, exist_ok=True)
 
 # Folder that holds flet.exe inside an installed build.
 FLET_CLIENT_DIR = RES_DIR / "flet_client" / "flet"
+
+# Written by the installer: [speech] enabled=0 when the user turned speech
+# recognition (which sends mic audio to Google) off during installation.
+INSTALL_INI = Path(sys.executable).resolve().parent / "pinglish.ini" if FROZEN else None
+
+
+def speech_enabled() -> bool:
+    """False only when the installer was told to turn speech recognition off."""
+    if INSTALL_INI is None or not INSTALL_INI.is_file():
+        return True
+    import configparser
+
+    ini = configparser.ConfigParser()
+    try:
+        ini.read(INSTALL_INI, encoding="utf-8")
+        return ini.getboolean("speech", "enabled", fallback=True)
+    except (configparser.Error, ValueError, OSError):
+        return True
