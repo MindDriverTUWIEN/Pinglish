@@ -146,11 +146,15 @@ Set-Content data\speech_key.txt "another-key"
 setx GOOGLE_SPEECH_KEY "another-key"
 ```
 
+</div>
+
 > [!NOTE]
 > این سرویس غیررسمی است. Google هیچ محدودیت یا تضمینی برای آن منتشر نکرده و
 > ممکن است هر زمان آن را محدود یا خاموش کند. در آن صورت میکروفون کار نمی‌کند،
 > ولی تبدیل متن آسیبی نمی‌بیند و می‌توانید به
 > [کلید Google Cloud خودتان](#own-cloud-key) بروید.
+
+<div dir=\"rtl\">
 
 تبدیل متن کاملاً آفلاین کار می‌کند.
 
@@ -181,6 +185,8 @@ setx GOOGLE_SPEECH_KEY "another-key"
 حذف کنید. اگر Google کلید شما را نپذیرد، نوار وضعیت دلیلش را نشان می‌دهد؛ مثلاً
 *API key not valid*.
 
+</div>
+
 > [!WARNING]
 > **هزینه‌ها.** Google Cloud سهمیهٔ رایگان ماهانه‌ای از دقیقه‌های Speech-to-Text
 > دارد و بعد از آن برای هر دقیقهٔ صدا هزینه می‌گیرد؛
@@ -189,6 +195,8 @@ setx GOOGLE_SPEECH_KEY "another-key"
 > می‌فرستد، پس صدای محاسبه‌شده چند برابرِ زمانی است که واقعاً صحبت می‌کنید.
 > در پروژه‌تان یک [هشدار بودجه](https://cloud.google.com/billing/docs/how-to/budgets)
 > تنظیم کنید و هرگز کلیدتان را منتشر نکنید.
+
+<div dir=\"rtl\">
 
 <a id="data-files"></a>
 ## تنظیمات و فایل‌های داده
