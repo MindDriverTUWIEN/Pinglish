@@ -3,7 +3,7 @@
 #   .\installer\build_msix.ps1 -Version 1.05
 # Needs: the Windows 10/11 SDK (makeappx.exe, makepri.exe) and the project's .venv.
 # The package is not signed: the Store signs it. Package identity: installer\msix\identity.json.
-param([string]$Version = "1.04")
+param([string]$Version = "1.05")
 
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot

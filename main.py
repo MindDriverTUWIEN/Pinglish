@@ -294,7 +294,7 @@ def _schedule_native_window_icon():
 
 # ----------------------------- Constants & Paths -----------------------------
 APP_NAME = "Pinglish"
-APP_VERSION = "1.04"
+APP_VERSION = "1.05"
 APP_DIR = RES_DIR      # read-only resources (assets/, launcher)
 DATA_DIR = USER_DIR    # settings, log: data/ from source, %LOCALAPPDATA%\Pinglish installed
 if FROZEN and FLET_CLIENT_DIR.is_dir():
