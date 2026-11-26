@@ -4,6 +4,8 @@
 
 # Pinglish
 
+**English** | [فارسی](README.fa.md)
+
 **Type Persian in Latin letters, or just speak it, and get proper Persian script.**
 
 A Windows desktop app that converts Pinglish / Finglish (`salam chetori?`) into
