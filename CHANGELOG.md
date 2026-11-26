@@ -14,7 +14,7 @@ All notable changes to this project are documented here. The format follows
   or `GOOGLE_CLOUD_SPEECH_KEY`), used instead of the free endpoint when set.
 
 ### Changed
-- When installed, user files live in `%LOCALAPPDATA%Pinglish`; from source
+- When installed, user files live in `%LOCALAPPDATA%\Pinglish`; from source
   they stay in `data/`.
 - Clearer status messages when a speech service refuses a request.
 
