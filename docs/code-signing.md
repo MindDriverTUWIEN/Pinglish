@@ -40,12 +40,13 @@ Until SignPath is set up, the workflow builds the installer unsigned.
 
 ## Releasing a new version
 
-1. Update `APP_VERSION` in `main.py` and `CHANGELOG.md`, commit and push.
-2. Create and push a tag, e.g. `git tag v1.03` and `git push origin v1.03`.
-3. Create the GitHub release for that tag (or let the workflow attach the file
-   to an existing one).
+1. Update `APP_VERSION` in `main.py` and `CHANGELOG.md`.
+2. Write the release text in `docs/release-notes/v1.03.md`; commit and push.
+3. Create and push a tag, e.g. `git tag v1.03` and `git push origin v1.03`.
+   The workflow creates a draft release with that text and the installer.
 4. Approve the signing request on signpath.io. The workflow waits, then
-   attaches the signed installer to the release.
+   attaches the signed installer to the draft.
+5. Review the draft release on GitHub and click **Publish release**.
 
 ## Requirements from SignPath Foundation that this project follows
 

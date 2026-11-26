@@ -4,8 +4,9 @@
 # - Once SignPath is set up (repository variable SIGNPATH_ORGANIZATION_ID and
 #   secret SIGNPATH_API_TOKEN, see docs/code-signing.md), the installer is
 #   submitted to SignPath and signed after manual approval.
-# - Pushing a tag such as v1.03 attaches the installer (signed if available)
-#   to the GitHub release of that tag.
+# - Pushing a tag such as v1.03 creates a draft release of that tag with the
+#   text in docs/release-notes/v1.03.md and attaches the installer (signed if
+#   available). Review the draft on GitHub and click Publish.
 
 name: Build installer
 
@@ -43,7 +44,7 @@ jobs:
         id: version
         shell: pwsh
         run: |
-          $v = if ("${{ github.ref_type }}" -eq "tag") { "${{ github.ref_name }}".TrimStart("v") } else { "1.02" }
+          $v = if ("${{ github.ref_type }}" -eq "tag") { "${{ github.ref_name }}".TrimStart("v") } else { "1.03" }
           "version=$v" >> $env:GITHUB_OUTPUT
 
       - name: Build Pinglish.exe and the installer
@@ -82,3 +83,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: ${{ vars.SIGNPATH_ORGANIZATION_ID != '' && 'signed/*.exe' || format('dist/Pinglish-Setup-{0}.exe', steps.version.outputs.version) }}
+          name: Pinglish ${{ steps.version.outputs.version }}
+          # Text from docs/release-notes/<tag>.md. A new release starts as a
+          # draft: nothing is public until the maintainer clicks Publish.
+          body_path: docs/release-notes/${{ github.ref_name }}.md
+          draft: true

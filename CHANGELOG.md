@@ -3,13 +3,13 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [1.03] - 2026-11-26
 
 ### Added
 - The mic works right after installation: Chromium's public speech key is built
   in as the default.
-- Windows installer (`Pinglish-Setup-<version>.exe`, Inno Setup) and a
-  PyInstaller build that bundles Flet's window program; see `installer/`.
+- Installer build recipe in `installer/` (PyInstaller + Inno Setup), bundling
+  Flet's window program so nothing is downloaded at start-up.
 - Privacy policy (PRIVACY.md), shown by the installer, with an option to turn
   speech recognition off.
 - GitHub Actions workflow that builds the installer from source, ready for

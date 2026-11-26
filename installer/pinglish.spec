@@ -9,7 +9,7 @@ from pathlib import Path
 from PyInstaller.utils.hooks import collect_data_files, collect_submodules
 
 ROOT = Path(SPECPATH).parent
-APP_VERSION = os.environ.get("PINGLISH_VERSION", "1.02")
+APP_VERSION = os.environ.get("PINGLISH_VERSION", "1.03")
 
 import flet_desktop  # noqa: E402  (provides the cached Flet client)
 
