@@ -5,6 +5,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.04] - 2026-11-26
+
 ### Changed
 - Only one Pinglish runs at a time. Opening it again (Start menu, desktop
   icon) brings the running window to the front instead of starting a second
