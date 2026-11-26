@@ -26,6 +26,7 @@ alternative spellings, and turns spoken Persian into text live.
 - [Installation](#installation)
 - [Usage](#usage)
 - [Speech key](#speech-key)
+- [Using your own Google Cloud key](#using-your-own-google-cloud-key)
 - [Configuration and data files](#configuration-and-data-files)
 - [How it works](#how-it-works)
 - [Project structure](#project-structure)
@@ -139,11 +140,45 @@ setx GOOGLE_SPEECH_KEY "<Chromium speech key>"
 > [!NOTE]
 > This endpoint is unofficial. Google publishes no limits or guarantees for it
 > and may restrict or switch it off at any time. If that happens, the mic stops
-> working, but text conversion is unaffected. A key from Google Cloud's
-> Speech-to-Text API does not work here, because that service uses a different
-> address and request format.
+> working, but text conversion is unaffected. If that happens, use
+> [your own Google Cloud key](#using-your-own-google-cloud-key).
 
 Text conversion works fully without a key and without internet access.
+
+## Using your own Google Cloud key
+
+If the free endpoint stops working, or you prefer the official service, the app
+can use Google Cloud's
+[Speech-to-Text API](https://cloud.google.com/speech-to-text) with your own key.
+When this key is set, it is always used instead of the free endpoint.
+
+1. In the [Google Cloud console](https://console.cloud.google.com/), create or
+   select a project and enable **Cloud Speech-to-Text API**. A billing account
+   is required, even for the free quota.
+2. Under **APIs & Services → Credentials**, choose **Create credentials → API
+   key**. Restrict the key to the Cloud Speech-to-Text API.
+3. Add the key in either way, then restart the app:
+
+   ```powershell
+   # Option 1: a local file that git ignores
+   Set-Content data\google_cloud_key.txt "your-cloud-key"
+
+   # Option 2: an environment variable
+   setx GOOGLE_CLOUD_SPEECH_KEY "your-cloud-key"
+   ```
+
+To go back to the free endpoint, delete `data\google_cloud_key.txt` or the
+variable. If Google refuses your key, the status line shows Google's reason,
+for example *API key not valid*.
+
+> [!WARNING]
+> **Costs.** Google Cloud includes a free monthly quota of Speech-to-Text
+> minutes, then bills per minute of audio; see
+> [Google's pricing](https://cloud.google.com/speech-to-text/pricing). While you
+> speak, the app sends the growing phrase again for every live update, so the
+> billed audio is several times longer than the time you actually speak.
+> Set a [budget alert](https://cloud.google.com/billing/docs/how-to/budgets) in
+> your project, and never publish your key.
 
 ## Configuration and data files
 
@@ -155,7 +190,8 @@ is ignored by git.
 | `data/community_dict.txt` | Main Pinglish → Persian dictionary (shipped) |
 | `data/user_corrections.txt` | Spellings you picked in Suggested Alternatives |
 | `data/settings.json` | Hotkey, auto-copy and window size |
-| `data/speech_key.txt` | Speech key for the mic (see above) |
+| `data/speech_key.txt` | Speech key for the free endpoint (see above) |
+| `data/google_cloud_key.txt` | Optional: your own Google Cloud key |
 | `data/finglish_launch.log` | Start-up and microphone log for troubleshooting |
 
 ## How it works
@@ -223,7 +259,8 @@ The output in `build/windows/` runs without a Python installation.
 | Typing does nothing | Check that **Live convert** is on, or press **Convert**. |
 | The first word you say is missing | Wait for **Listening on …** before speaking. |
 | "… sends no sound" | Take the headset out of its case or reconnect it. |
-| "Persian speech recognition is unavailable" | Check your internet connection and [speech key](#speech-key). |
+| "Google's free speech service refused the request" | Check your internet connection, or use [your own Google Cloud key](#using-your-own-google-cloud-key). |
+| "Your Google Cloud key was refused: …" | Check the key, that the Speech-to-Text API is enabled, and that billing is set up. |
 | Nothing appears at start | Run `run.bat` to see errors, and read `data/finglish_launch.log`. |
 | An old pin says "Flet description" | Unpin it, start the app, and pin it again. |
 

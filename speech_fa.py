@@ -12,6 +12,7 @@ before the headset connected.
 
 from __future__ import annotations
 
+import base64
 import ctypes
 import io
 import json
@@ -21,6 +22,7 @@ import queue
 import threading
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 import wave
 from pathlib import Path
@@ -77,7 +79,8 @@ def _speech_key() -> str:
         key = _KEY_FILE.read_text(encoding="utf-8").strip()
     if not key:
         raise SpeechError(
-            "No speech key set. Put it in data/speech_key.txt or GOOGLE_SPEECH_KEY (see README)."
+            "No speech key set. Add one in data/speech_key.txt, or your own Google Cloud "
+            "key in data/google_cloud_key.txt (see README)."
         )
     return key
 
@@ -241,6 +244,10 @@ def transcribe_persian(wav_bytes: bytes) -> str:
     if rate <= 0 or len(pcm) < int(rate * 2 * 0.25):
         raise SpeechError("The recording was too short. Speak, then keep going.")
 
+    cloud_key = _cloud_key()
+    if cloud_key:
+        return _recognize_cloud(pcm, rate, cloud_key)
+
     url = f"{_GOOGLE_SPEECH_URL}?client=chromium&lang=fa-IR&key={_speech_key()}"
     request = urllib.request.Request(
         url,
@@ -251,10 +258,71 @@ def transcribe_persian(wav_bytes: bytes) -> str:
         with urllib.request.urlopen(request, timeout=12) as response:
             body = response.read().decode("utf-8", "replace")
     except urllib.error.HTTPError as ex:
-        raise SpeechError("Persian speech recognition is unavailable right now.") from ex
+        raise SpeechError(
+            f"Google's free speech service refused the request (HTTP {ex.code}). "
+            "If this keeps happening, add your own Google Cloud key (see README)."
+        ) from ex
     except urllib.error.URLError as ex:
         raise SpeechError("Persian speech recognition needs an internet connection.") from ex
     return _transcripts(body)
+
+
+# Your own Google Cloud key, for when the free endpoint is restricted or off.
+# When set, it is used instead of the free endpoint. See README, "Using your own
+# Google Cloud key".
+_CLOUD_URL = "https://speech.googleapis.com/v1/speech:recognize"
+_CLOUD_KEY_FILE = Path(__file__).resolve().parent / "data" / "google_cloud_key.txt"
+
+
+def _cloud_key() -> str:
+    """GOOGLE_CLOUD_SPEECH_KEY, else data/google_cloud_key.txt, else ""."""
+    key = os.environ.get("GOOGLE_CLOUD_SPEECH_KEY", "").strip()
+    if not key and _CLOUD_KEY_FILE.is_file():
+        try:
+            key = _CLOUD_KEY_FILE.read_text(encoding="utf-8").strip()
+        except OSError:
+            key = ""
+    return key
+
+
+def _recognize_cloud(pcm: bytes, rate: int, key: str) -> str:
+    """Google Cloud Speech-to-Text v1, synchronous recognize, fa-IR."""
+    payload = json.dumps(
+        {
+            "config": {
+                "encoding": "LINEAR16",
+                "sampleRateHertz": int(rate),
+                "languageCode": "fa-IR",
+                "enableAutomaticPunctuation": False,
+            },
+            "audio": {"content": base64.b64encode(pcm).decode("ascii")},
+        }
+    ).encode("utf-8")
+    request = urllib.request.Request(
+        f"{_CLOUD_URL}?key={urllib.parse.quote(key, safe='')}",
+        data=payload,
+        headers={"Content-Type": "application/json; charset=utf-8"},
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=15) as response:
+            body = json.loads(response.read().decode("utf-8", "replace") or "{}")
+    except urllib.error.HTTPError as ex:
+        try:
+            detail = json.loads(ex.read().decode("utf-8", "replace"))["error"]["message"]
+        except Exception:
+            detail = f"HTTP {ex.code}"
+        raise SpeechError(f"Your Google Cloud key was refused: {detail[:160]}") from ex
+    except urllib.error.URLError as ex:
+        raise SpeechError("Persian speech recognition needs an internet connection.") from ex
+    except ValueError as ex:
+        raise SpeechError("Google Cloud sent an answer that could not be read.") from ex
+    parts = []
+    for result in body.get("results") or []:
+        alternatives = result.get("alternatives") or []
+        text = (alternatives[0].get("transcript") or "").strip() if alternatives else ""
+        if text:
+            parts.append(text)
+    return " ".join(parts).strip()
 
 
 class _UtteranceGate:

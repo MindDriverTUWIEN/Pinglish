@@ -3,6 +3,15 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+- Optional own Google Cloud Speech-to-Text key (`data/google_cloud_key.txt`
+  or `GOOGLE_CLOUD_SPEECH_KEY`), used instead of the free endpoint when set.
+
+### Changed
+- Clearer status messages when a speech service refuses a request.
+
 ## [1.02] - 2026-11-26
 
 First public release.
