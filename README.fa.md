@@ -23,8 +23,27 @@
 
 ---
 
+<a id="screenshots"></a>
+## تصاویر
+
+<p align="center">
+  <img src="docs/screenshots/main-window.png" alt="پنجرهٔ اصلی Pinglish پس از اجرا" width="720">
+  <br><em>برنامه هنگام باز شدن: Pinglish Input، Suggested Alternatives و Persian Output.</em>
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/typing.png" alt="تایپ salam chetori? به سلام چطوری؟ تبدیل می‌شود" width="720">
+  <br><em>با تایپ <code>salam chetori?</code> همان لحظه <code>سلام چطوری؟</code> ساخته می‌شود. با کلیک روی هر کلمه املاهای آن نمایش داده می‌شود.</em>
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/speech-alternatives.png" alt="جملهٔ گفته‌شده با فهرست املاهای باز" width="720">
+  <br><em>گفته‌شده با میکروفون: <code>salam hal shoma chetor ast?</code> ← <code>سلام حال شما چطور است؟</code>، با فهرست املاهای «حال» باز.</em>
+</p>
+
 ## فهرست
 
+- [تصاویر](#screenshots)
 - [امکانات](#features)
 - [پیش‌نیازها](#requirements)
 - [نصب](#installation)
@@ -242,6 +261,7 @@ Pinglish/
 │   ├── community_dict.txt     # Shipped dictionary
 │   └── community_dict_meta.json
 ├── assets/                    # Icons and the Vazirmatn font
+├── docs/screenshots/          # Images used in the README
 ├── scripts/
 │   └── build_community_dict.py
 ├── launch-hidden.vbs          # Console-free launcher

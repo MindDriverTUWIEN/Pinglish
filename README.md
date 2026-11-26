@@ -21,8 +21,26 @@ alternative spellings, and turns spoken Persian into text live.
 
 ---
 
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/main-window.png" alt="Pinglish main window right after starting" width="720">
+  <br><em>The app as it opens: Pinglish Input, Suggested Alternatives and Persian Output.</em>
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/typing.png" alt="Typing salam chetori? converts to سلام چطوری؟" width="720">
+  <br><em>Typing <code>salam chetori?</code> gives <code>سلام چطوری؟</code> live. Clicking a word shows its spellings.</em>
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/speech-alternatives.png" alt="Spoken sentence with the alternatives dropdown open" width="720">
+  <br><em>Spoken with the mic: <code>salam hal shoma chetor ast?</code> → <code>سلام حال شما چطور است؟</code>, with the alternatives for حال open.</em>
+</p>
+
 ## Contents
 
+- [Screenshots](#screenshots)
 - [Features](#features)
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -224,6 +242,7 @@ Pinglish/
 │   ├── community_dict.txt     # Shipped dictionary
 │   └── community_dict_meta.json
 ├── assets/                    # Icons and the Vazirmatn font
+├── docs/screenshots/          # Images used in the README
 ├── scripts/
 │   └── build_community_dict.py
 ├── launch-hidden.vbs          # Console-free launcher
