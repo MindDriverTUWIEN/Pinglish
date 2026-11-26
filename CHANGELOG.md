@@ -5,6 +5,10 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- winget manifests for 1.04 in `packaging/winget/`, with steps to submit them
+  to the Windows Package Manager catalog.
+
 ### Changed
 - README, release notes and the signing guide now say plainly that the
   installer is not code-signed (the SignPath Foundation application was
