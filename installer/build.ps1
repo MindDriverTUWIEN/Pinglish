@@ -1,7 +1,7 @@
 # Builds dist\Pinglish\Pinglish.exe (PyInstaller) and dist\Pinglish-Setup-<version>.exe (Inno Setup).
 # Run from anywhere:  .\installer\build.ps1
 # Needs: the project's .venv with requirements + pyinstaller, and Inno Setup 6 or 7.
-param([string]$Version = "1.03")
+param([string]$Version = "1.04")
 
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot

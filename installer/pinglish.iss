@@ -3,7 +3,7 @@
 ; (needs dist\Pinglish from PyInstaller first; build.ps1 does both)
 
 #ifndef AppVersion
-  #define AppVersion "1.03"
+  #define AppVersion "1.04"
 #endif
 #define AppName "Pinglish"
 #define AppExe "Pinglish.exe"
