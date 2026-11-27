@@ -5,6 +5,11 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+- Pinglish is in the Microsoft Store
+  (https://apps.microsoft.com/detail/9PLPN1KMX104). Both READMEs now offer the
+  Store as the recommended download, with the GitHub installer as an option.
+
 ## [1.05] - 2026-11-26
 
 ### Added

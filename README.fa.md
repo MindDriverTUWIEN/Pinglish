@@ -26,11 +26,16 @@
 <a id="download"></a>
 ## دانلود
 
-**[⬇ دانلود آخرین نسخهٔ نصب‌کنندهٔ Pinglish](https://github.com/MindDriverTUWIEN/Pinglish/releases/latest)**
-(`Pinglish-Setup-<version>.exe`، ویندوز ۱۰/۱۱، ۶۴ بیتی)
+<a href="https://apps.microsoft.com/detail/9PLPN1KMX104"><img src="https://get.microsoft.com/images/en-us%20dark.svg" alt="Get it from Microsoft" width="200"></a>
 
-نصب‌کننده را اجرا کنید، مراحل نصب را دنبال کنید و Pinglish را از منوی Start
-باز کنید. به پایتون یا نرم‌افزار دیگری نیاز نیست. جزئیات در بخش [نصب](#installation).
+**پیشنهاد ما: [Pinglish در Microsoft Store](https://apps.microsoft.com/detail/9PLPN1KMX104)** (ویندوز ۱۰/۱۱، ۶۴ بیتی).
+با یک کلیک و بدون هیچ پیام هشدار امنیتی نصب می‌شود و خودش به‌روز می‌شود.
+
+یا نصب‌کننده را از گیت‌هاب دانلود کنید:
+**[⬇ Pinglish-Setup-&lt;version&gt;.exe](https://github.com/MindDriverTUWIEN/Pinglish/releases/latest)**.
+اجرایش کنید، مراحل نصب را دنبال کنید و Pinglish را از منوی Start باز کنید.
+
+به پایتون یا نرم‌افزار دیگری نیاز نیست. جزئیات در بخش [نصب](#installation).
 
 <a id="screenshots"></a>
 ## تصاویر
@@ -103,7 +108,16 @@
 <a id="installation"></a>
 ## نصب
 
-### برای کاربران: نصب‌کننده
+### برای کاربران: Microsoft Store (پیشنهادی)
+
+1. [Pinglish را در Microsoft Store](https://apps.microsoft.com/detail/9PLPN1KMX104) باز کنید و روی **Get** (یا **Install**) کلیک کنید.
+2. **Pinglish** را از منوی Start اجرا کنید.
+
+نسخهٔ Store را مایکروسافت امضا کرده است، پس ویندوز هیچ هشداری نشان نمی‌دهد و برنامه
+خودکار به‌روز می‌شود. ویندوز یک بار پیش از استفادهٔ Pinglish از میکروفون اجازه می‌گیرد.
+برای اجرای خودکار با ویندوز، آن را در **Settings → Apps → Startup** روشن کنید.
+
+### برای کاربران: نصب‌کننده از گیت‌هاب
 
 1. فایل `Pinglish-Setup-<version>.exe` را از
    [آخرین نسخهٔ منتشرشده](https://github.com/MindDriverTUWIEN/Pinglish/releases/latest) دانلود کنید.
