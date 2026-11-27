@@ -23,11 +23,16 @@ alternative spellings, and turns spoken Persian into text live.
 
 ## Download
 
-**[⬇ Download the latest Pinglish installer](https://github.com/MindDriverTUWIEN/Pinglish/releases/latest)**
-(`Pinglish-Setup-<version>.exe`, Windows 10/11, 64-bit)
+<a href="https://apps.microsoft.com/detail/9PLPN1KMX104"><img src="https://get.microsoft.com/images/en-us%20dark.svg" alt="Get it from Microsoft" width="200"></a>
 
-Run the installer, click through the setup, and start Pinglish from the Start
-menu. No Python or other software is needed. See [Installation](#installation)
+**Recommended: [Pinglish in the Microsoft Store](https://apps.microsoft.com/detail/9PLPN1KMX104)** (Windows 10/11, 64-bit).
+Installs with one click, without any security warning, and updates itself.
+
+Or download the installer from GitHub:
+**[⬇ Pinglish-Setup-&lt;version&gt;.exe](https://github.com/MindDriverTUWIEN/Pinglish/releases/latest)**.
+Run it, click through the setup, and start Pinglish from the Start menu.
+
+No Python or other software is needed. See [Installation](#installation)
 for details.
 
 ## Screenshots
@@ -97,7 +102,16 @@ for details.
 
 ## Installation
 
-### For users: the installer
+### For users: Microsoft Store (recommended)
+
+1. Open [Pinglish in the Microsoft Store](https://apps.microsoft.com/detail/9PLPN1KMX104) and click **Get** (or **Install**).
+2. Start **Pinglish** from the Start menu.
+
+The Store version is signed by Microsoft, so Windows shows no warning, and it
+updates automatically. Windows asks once before Pinglish uses the microphone.
+To start Pinglish with Windows, switch it on in **Settings → Apps → Startup**.
+
+### For users: the installer from GitHub
 
 1. Download `Pinglish-Setup-<version>.exe` from the
    [latest release](https://github.com/MindDriverTUWIEN/Pinglish/releases/latest).
