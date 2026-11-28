@@ -5,6 +5,9 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- German README (`README.de.md`), linked from the English and Persian READMEs.
+
 ### Changed
 - Pinglish is in the Microsoft Store
   (https://apps.microsoft.com/detail/9PLPN1KMX104). Both READMEs now offer the
