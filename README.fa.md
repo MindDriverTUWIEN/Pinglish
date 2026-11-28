@@ -4,7 +4,7 @@
 
 # Pinglish
 
-[English](README.md) | **فارسی**
+[English](README.md) | **فارسی** | [Deutsch](README.de.md)
 
 ![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-0078D6)
 ![Python](https://img.shields.io/badge/python-3.11%2B-3776AB)

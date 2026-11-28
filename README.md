@@ -4,7 +4,7 @@
 
 # Pinglish
 
-**English** | [فارسی](README.fa.md)
+**English** | [فارسی](README.fa.md) | [Deutsch](README.de.md)
 
 **Type Persian in Latin letters, or just speak it, and get proper Persian script.**
 
